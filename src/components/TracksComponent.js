@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import PlayerComponent from './PlayerComponent';
+import PlaybackControls from './PlaybackControls';
 
 const TracksComponent = () => {
   const { playlistId } = useParams(); // Get playlistId from route parameters
@@ -11,6 +12,7 @@ const TracksComponent = () => {
   const [accessToken] = useState(localStorage.getItem('access_token'));
   const [deviceId, setDeviceId] = useState(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [player, setPlayer] = useState(null);
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -31,8 +33,9 @@ const TracksComponent = () => {
     fetchTracks();
   }, [playlistId, accessToken]);
 
-  const handlePlayerReady = (id) => {
+  const handlePlayerReady = (id, playerInstance) => {
     setDeviceId(id);
+    setPlayer(playerInstance);
     setIsPlayerReady(true);
   };
 
@@ -85,6 +88,9 @@ const TracksComponent = () => {
           </li>
         ))}
       </ul>
+      {isPlayerReady && player && (
+        <PlaybackControls player={player} isPlayerReady={isPlayerReady} />
+      )}
     </div>
   );
 };
