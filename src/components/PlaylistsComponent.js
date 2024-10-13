@@ -2,49 +2,65 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Card, CardContent, CardActions, Button } from '@mui/material';
 import LogoutButton from './LogoutButton';
 
 const PlaylistsComponent = () => {
   const [playlists, setPlaylists] = useState([]);
+  const [accessToken] = useState(localStorage.getItem('access_token'));
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-      const token = localStorage.getItem('access_token');
       try {
         console.log("Fetching playlists...");
         const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${accessToken}`
           }
         });
         console.log("Fetched playlists successfully:", response.data.items);
         setPlaylists(response.data.items);
       } catch (error) {
-        console.error('Error fetching playlists', error);
+        console.error('Error fetching playlists:', error);
       }
     };
 
     fetchPlaylists();
-  }, []);
+  }, [accessToken]);
 
-  // Handle playlist click
-  const handlePlaylistClick = (playlistId) => {
+  const handleViewPlaylist = (playlistId) => {
     navigate(`/playlists/${playlistId}`);
   };
 
   return (
-    <div>
-      <h2>Your Playlists</h2>
+    <Box sx={{ padding: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Your Playlists
+      </Typography>
       <LogoutButton />
-      <ul>
-        {playlists.map(playlist => (
-          <li key={playlist.id} onClick={() => handlePlaylistClick(playlist.id)} style={{ cursor: 'pointer' }}>
-            {playlist.name}
-          </li>
+      <Box sx={{ marginTop: 3 }}>
+        {playlists.map((playlist) => (
+          <Card key={playlist.id} sx={{ marginBottom: 2 }}>
+            <CardContent>
+              <Typography variant="h6">{playlist.name}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {playlist.tracks.total} tracks
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleViewPlaylist(playlist.id)}
+              >
+                View Tracks
+              </Button>
+            </CardActions>
+          </Card>
         ))}
-      </ul>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

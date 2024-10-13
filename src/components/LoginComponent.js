@@ -1,5 +1,6 @@
 // src/components/LoginComponent.js
 import React from 'react';
+import { Button, Box } from '@mui/material';
 import { generateCodeVerifier, generateCodeChallenge } from '../authUtils';
 
 const LoginComponent = () => {
@@ -11,7 +12,6 @@ const LoginComponent = () => {
     const clientId = "184e094404234178b71f56a6b60a44d5";
     const redirectUri = "http://localhost:3000/callback";
     
-    // Scopes needed for playback and playlists
     const scope = [
       "user-read-private",
       "user-read-email",
@@ -28,10 +28,13 @@ const LoginComponent = () => {
   };
 
   return (
-    <button onClick={handleLogin}>
-      Login with Spotify
-    </button>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Button variant="contained" color="primary" onClick={handleLogin}>
+        Login with Spotify
+      </Button>
+    </Box>
   );
 };
 
 export default LoginComponent;
+

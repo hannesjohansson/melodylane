@@ -1,10 +1,9 @@
+// src/components/PlaybackControls.js
 import React, { useState, useEffect } from 'react';
 import { Box, IconButton, Slider } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import StopIcon from '@mui/icons-material/Stop';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 const PlaybackControls = ({ player, isPlayerReady }) => {
   const [progress, setProgress] = useState(0);
@@ -14,7 +13,7 @@ const PlaybackControls = ({ player, isPlayerReady }) => {
   useEffect(() => {
     if (isPlayerReady && player) {
       console.log("Adding player_state_changed listener");
-      const stateListener = player.addListener('player_state_changed', (state) => {
+      const stateListener = player.addListener('player_state_changed', state => {
         if (!state) return;
 
         setProgress(state.position);
@@ -86,8 +85,9 @@ const PlaybackControls = ({ player, isPlayerReady }) => {
         color: '#fff',
         padding: 2,
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
       }}
     >
       <Box>
@@ -103,14 +103,8 @@ const PlaybackControls = ({ player, isPlayerReady }) => {
             <PlayArrowIcon />
           </IconButton>
         )}
-        <IconButton onClick={() => player.previousTrack()} color="primary">
-          <SkipPreviousIcon />
-        </IconButton>
-        <IconButton onClick={() => player.nextTrack()} color="primary">
-          <SkipNextIcon />
-        </IconButton>
       </Box>
-      <Box sx={{ width: '50%' }}>
+      <Box sx={{ width: '70%', marginTop: 1 }}>
         <Slider
           value={progress}
           max={duration}

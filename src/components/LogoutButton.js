@@ -1,24 +1,19 @@
 // src/components/LogoutButton.js
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Button, Box } from '@mui/material';
 
 const LogoutButton = () => {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
-    console.log("Logging out...");
-    // Clear the access token and other relevant data from localStorage
     localStorage.removeItem('access_token');
-    localStorage.removeItem('verifier');
-
-    // Redirect to the login page
-    navigate('/');
+    window.location.href = '/';
   };
 
   return (
-    <button onClick={handleLogout} style={{ margin: '10px' }}>
-      Log Out
-    </button>
+    <Box sx={{ marginBottom: 2 }}>
+      <Button variant="outlined" color="secondary" onClick={handleLogout}>
+        Logout
+      </Button>
+    </Box>
   );
 };
 
