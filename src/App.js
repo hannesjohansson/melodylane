@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom';
+
+import LoginComponent from './components/LoginComponent';
+import CallbackComponent from './components/CallbackComponent';
+import PlaylistsComponent from './components/PlaylistsComponent';
+import TracksComponent from './components/TracksComponent';
+import PlayerComponent from './components/PlayerComponent';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<LoginComponent />} />
+          <Route path="/callback" element={<CallbackComponent />} />
+          <Route path="/playlists" element={<PlaylistsComponent />} />
+          <Route path="/playlists/:playlistId" element={<TracksComponent />} />
+          <Route path="/player" element={<PlayerComponent />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
